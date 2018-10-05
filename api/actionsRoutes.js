@@ -26,5 +26,36 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// post action endpoint (create a new action)
+router.post("/", async (req, res) => {
+  try {
+    // no project check
+    if (!req.body.project_id) {
+      return res.status(400).json({ message: "enter a project ID" });
+    }
+
+    // no description check
+    if (!req.body.description) {
+      return res.status(400).json({ message: "enter a description" });
+    }
+
+    // no notes check
+    if (!req.body.notes) {
+      return res.status(400).json({ message: "enter some notes" });
+    }
+
+    // description length check
+    if (req.body.description.length > 128) {
+      return res
+        .status(400)
+        .json({ message: "description must be less than 128 characters" });
+    }
+    const newAction = await actions.insert(req.body);
+    res.status(201).json(newAction);
+  } catch (error) {
+    res.status(500).json({ message: "action could not be saved" });
+  }
+});
+
 // export router
 module.exports = router;
