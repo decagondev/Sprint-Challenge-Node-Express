@@ -15,5 +15,16 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "projects could not be retrieved" });
   }
 });
+
+// get project endpoint (based upon project id)
+router.get("/:id", async (req, res) => {
+  try {
+    const project = await projects.get(req.params.id);
+    res.status(200).json(project);
+  } catch (error) {
+    res.status(500).json({ message: "project could not be retrieved" });
+  }
+});
+
 // export router
 module.exports = router;
