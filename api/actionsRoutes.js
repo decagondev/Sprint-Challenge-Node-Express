@@ -5,10 +5,11 @@ const router = express.Router();
 
 // import the actions model
 const actions = require("../data/helpers/actionModel");
-
+const projects = require("../data/helpers/projectModel");
 // get actions endpoint
 router.get("/", async (req, res) => {
   try {
+    const project_id = req.params.id;
     const allActions = await actions.get();
     res.status(200).json(allActions);
   } catch (error) {
@@ -50,6 +51,16 @@ router.post("/", async (req, res) => {
         .status(400)
         .json({ message: "description must be less than 128 characters" });
     }
+
+    const proj_id = req.body.project_id;
+    const proj = await projects.get(proj_id).catch(error => {
+      console.log(error);
+      return res
+        .status(500)
+        .json({
+          msg: `project with an id of ${proj_id} does not exist in database`
+        });
+    });
     const newAction = await actions.insert(req.body);
     res.status(201).json(newAction);
   } catch (error) {

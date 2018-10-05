@@ -3,6 +3,7 @@ import axios from "axios";
 import { Route, withRouter } from "react-router-dom";
 import ProjectList from "../ProjectComponents/ProjectList";
 import Project from "../ProjectComponents/Project";
+import Action from "../ActionComponents/Action";
 import "./index.css";
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
 
   componentDidMount() {
     this.refetchProjects();
+    this.refetchActions();
   }
 
   refetchProjects = () => {
@@ -20,6 +22,15 @@ class App extends Component {
       .get(`http://localhost:9001/api/projects`)
       .then(response => {
         this.setState({ projects: response.data });
+      })
+      .catch(error => console.log(error));
+  };
+
+  refetchActions = () => {
+    axios
+      .get(`http://localhost:9001/api/actions`)
+      .then(response => {
+        this.setState({ actions: response.data });
       })
       .catch(error => console.log(error));
   };
@@ -38,7 +49,14 @@ class App extends Component {
           <Route
             path="/projects/:id"
             render={props => (
-              <Project {...props} refetchProjects={this.refetchProjects} />
+              <div>
+                <Project
+                  {...props}
+                  refetchProjects={this.refetchProjects}
+                  refetchActions={this.refetchActions}
+                  actions={this.state.actions}
+                />
+              </div>
             )}
           />
         </div>

@@ -16,7 +16,7 @@ export default class Project extends Component {
 
   componentDidMount() {
     axios
-      .get(`http://localhost:8000/api/projects/${this.id}`)
+      .get(`http://localhost:9001/api/projects/${this.id}`)
       .then(response => {
         this.setState({
           project: response.data,
@@ -31,11 +31,12 @@ export default class Project extends Component {
 
   getActions = () => {
     axios
-      .get(`http://localhost:8000/api/projects/${this.id}/actions`)
+      .get(`http://localhost:9001/api/projects/${this.id}/actions`)
       .then(response => {
         this.setState({
           actions: response.data
         });
+        console.log(this.state.actions);
       })
       .catch(error => {
         console.log(error);
@@ -43,11 +44,7 @@ export default class Project extends Component {
   };
 
   render() {
-    if (!this.state.project) {
-      return (
-        <div className="main-container Project">Project is loading...</div>
-      );
-    }
+    const theActions = this.state.actions.slice();
 
     return (
       <div className="main-container project">
@@ -55,8 +52,14 @@ export default class Project extends Component {
           {this.state.name}
           's <span>Actions</span>
         </h2>
-        <ActionList actions={this.state.actions} />
-
+        <h2>Actions</h2>
+        {theActions.map(action => {
+          return (
+            <div>
+              <h4>{action.description}</h4>
+            </div>
+          );
+        })}
         <a className="back-lnk" href="/">
           Back
         </a>
