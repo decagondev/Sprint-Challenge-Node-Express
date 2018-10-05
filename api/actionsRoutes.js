@@ -62,31 +62,46 @@ router.put("/:id", async (req, res) => {
   try {
     // no project check
     if (!req.body.project_id) {
-      return res.status(400).json({ message: "Please enter a project ID." });
+      return res.status(400).json({ message: "enter a project ID" });
     }
 
     // no description check
     if (!req.body.description) {
-      return res.status(400).json({ message: "Please enter a description." });
+      return res.status(400).json({ message: "enter a description" });
     }
 
     // no notes check
     if (!req.body.notes) {
       return res
         .status(400)
-        .json({ message: "Please add at least an empty string for notes." });
+        .json({ message: "add at least an empty string for notes" });
     }
 
     // description length check
     if (req.body.description.length > 128) {
       return res
         .status(400)
-        .json({ message: "Description must be less than 128 characters." });
+        .json({ message: "description must be less than 128 characters" });
     }
     const editedAction = await actions.insert(req.body);
     res.status(200).json(editedAction);
   } catch (error) {
-    res.status(500).json({ message: "Action could not be edited." });
+    res.status(500).json({ message: "action could not be edited" });
+  }
+});
+
+// delete action endpoint (delete an action at given id)
+router.delete("/:id", async (req, res) => {
+  try {
+    const action = await actions.remove(req.params.id);
+    // action exists check
+    if (action === 0) {
+      res.status(404).json({ message: "action does not exist" });
+      return;
+    }
+    res.status(200).json(action);
+  } catch (error) {
+    res.status(500).json({ message: "action could not be deleted" });
   }
 });
 
