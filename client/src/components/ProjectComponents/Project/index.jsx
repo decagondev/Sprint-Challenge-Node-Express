@@ -56,15 +56,7 @@ export default class Project extends Component {
           's <span>Actions</span>
         </h2>
         <ActionList actions={this.state.actions} />
-        {/* {this.state.actions.map(action => {
-          return (
-          
-            <div key={action.id} className="action-container">
-              <h2>{action.text}</h2>
-              <em>{`actioned by ${action.actionedBy}`}</em>
-            </div>
-          );
-        })} */}
+
         <a className="back-lnk" href="/">
           Back
         </a>
