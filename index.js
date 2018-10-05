@@ -15,10 +15,11 @@ server.use(cors());
 server.use(helmet());
 server.use(morgan("combined"));
 
-// endpoints
-server.get("/", (req, res) => {
-  res.json({ message: "Hello Lambda" });
-});
+// import main routes
+mainRoutes = require("./api/mainRoutes");
+
+// use the mainRoutes for /api
+server.use("/api", mainRoutes);
 
 // have server listen on port
 server.listen(port, () =>
