@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Route, withRouter } from "react-router-dom";
-import UserList from "../UserComponents/UserList";
-import User from "../UserComponents/User";
+import ProjectList from "../ProjectComponents/ProjectList";
+import Project from "../ProjectComponents/Project";
 import "./index.css";
 
 class App extends Component {
@@ -32,13 +32,13 @@ class App extends Component {
           <Route
             exact
             path="/"
-            render={props => <UserList projects={this.state.projects} />}
+            render={props => <ProjectList projects={this.state.projects} />}
           />
 
           <Route
             path="/projects/:id"
             render={props => (
-              <User {...props} refetchProjects={this.refetchProjects} />
+              <Project {...props} refetchProjects={this.refetchProjects} />
             )}
           />
         </div>
