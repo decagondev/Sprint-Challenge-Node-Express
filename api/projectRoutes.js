@@ -36,5 +36,31 @@ router.get("/:id/actions", async (req, res) => {
   }
 });
 
+// post project endpoint (create a new project)
+router.post("/", async (req, res) => {
+  try {
+    // no name check
+    if (!req.body.name) {
+      return res.status(400).json({ message: "enter a name" });
+    }
+
+    // no description check
+    if (!req.body.description) {
+      return res.status(400).json({ message: "enter a description" });
+    }
+
+    // name length check
+    if (req.body.name.length > 128) {
+      return res
+        .status(400)
+        .json({ message: "name must be less than 128 characters" });
+    }
+    const newProject = await projects.insert(req.body);
+    res.status(201).json(newProject);
+  } catch (error) {
+    res.status(500).json({ message: "project could not be saved" });
+  }
+});
+
 // export router
 module.exports = router;
