@@ -13,4 +13,7 @@ const actionRoutes = require("./actionsRoutes");
 router.use("/projects", projectRoutes);
 
 // add a route to the action routes
-router.add("/actions", actionRoutes);
+router.use("/actions", actionRoutes);
+
+// export router
+module.exports = router;
