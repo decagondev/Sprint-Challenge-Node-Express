@@ -57,5 +57,38 @@ router.post("/", async (req, res) => {
   }
 });
 
+// put action endpoint (edit an action with a given id)
+router.put("/:id", async (req, res) => {
+  try {
+    // no project check
+    if (!req.body.project_id) {
+      return res.status(400).json({ message: "Please enter a project ID." });
+    }
+
+    // no description check
+    if (!req.body.description) {
+      return res.status(400).json({ message: "Please enter a description." });
+    }
+
+    // no notes check
+    if (!req.body.notes) {
+      return res
+        .status(400)
+        .json({ message: "Please add at least an empty string for notes." });
+    }
+
+    // description length check
+    if (req.body.description.length > 128) {
+      return res
+        .status(400)
+        .json({ message: "Description must be less than 128 characters." });
+    }
+    const editedAction = await actions.insert(req.body);
+    res.status(200).json(editedAction);
+  } catch (error) {
+    res.status(500).json({ message: "Action could not be edited." });
+  }
+});
+
 // export router
 module.exports = router;
