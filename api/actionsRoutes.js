@@ -52,14 +52,13 @@ router.post("/", async (req, res) => {
         .json({ message: "description must be less than 128 characters" });
     }
 
+    // project id exists check
     const proj_id = req.body.project_id;
     const proj = await projects.get(proj_id).catch(error => {
       console.log(error);
-      return res
-        .status(500)
-        .json({
-          msg: `project with an id of ${proj_id} does not exist in database`
-        });
+      return res.status(500).json({
+        message: `project with an id of ${proj_id} does not exist in database`
+      });
     });
     const newAction = await actions.insert(req.body);
     res.status(201).json(newAction);
